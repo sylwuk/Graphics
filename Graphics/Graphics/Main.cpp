@@ -33,12 +33,5 @@ void main()
 	{
 		window.get_events();
 		window.draw();
-
-		//std::cin.get();
-		//window.move_shape(0, 0, 3, 3);
-		window.delete_shape(10, 25);
 	}
-	//std::unique_ptr<Shape> ptr = std::make_unique<Square>(std::make_pair(20, 15), std::make_pair(0, 0));
-
-	//std::cin.get();
 }

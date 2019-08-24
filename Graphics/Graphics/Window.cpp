@@ -25,6 +25,11 @@ Window::Window() :
 
 	//SetFocus(GetConsoleWindow());
 
+	SMALL_RECT windowSize = { 0, 0, 70, 40 };
+
+	SetConsoleWindowInfo(console, TRUE, &windowSize);
+
+
 	get_cursor_position();
 }
 
@@ -130,6 +135,14 @@ void Window::key_event_handler(KEY_EVENT_RECORD event)
 			break;
 		case VK_F1:
 			is_moving_shape = !is_moving_shape;
+			break;
+		case VK_DELETE:
+			
+			if (active_shape != nullptr)
+			{
+				delete_shape(active_shape->get_x(), active_shape->get_y());
+				active_shape = nullptr;
+			}
 			break;
 		default:
 			break; // Unsupported key.

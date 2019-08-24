@@ -24,6 +24,8 @@ namespace syl_shapes
 	bool Line::is_on_shape(int x, int y)
 	{
 		if (Shape::is_on_shape(x, y)) return true;
+		if (x >= get_x() && x <= (get_x() + get_length()) &&
+			y >= get_y() && y <= (get_y() + get_height())) return true;
 		return false;
 	}
 
