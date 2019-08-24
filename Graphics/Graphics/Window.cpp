@@ -88,9 +88,9 @@ void Window::move_shape(int old_x, int old_y, int new_x, int new_y)
 
 void Window::move_active_shape(COORD position)
 {
-	short x = position.X - active_shape->get_x(); // Adjustment for the cursor position on X axis
-	short y = position.Y - active_shape->get_y(); // Adjustment for the cursor position on Y axis
-	active_shape->move(position.X, position.Y);
+	// Move shape with adjustment for initial mouse position in relation to shape start position
+	active_shape->move(position.X - active_shape_offset.first, 
+					   position.Y - active_shape_offset.second);
 }
 
 void Window::move_cursor()
@@ -158,6 +158,10 @@ void Window::mouse_event_handler(MOUSE_EVENT_RECORD event)
 					if (shape->is_on_shape(event.dwMousePosition.X, event.dwMousePosition.Y))
 					{
 						active_shape = shape;
+						// Save mouse posission offset in relation to shape starting position
+						// This is done to properly draw shape regardless of where mouse grabs it
+						active_shape_offset.first = event.dwMousePosition.X - shape->get_x();
+						active_shape_offset.second = event.dwMousePosition.Y - shape->get_y();
 						break;
 					}
 				}

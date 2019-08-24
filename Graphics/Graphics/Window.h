@@ -38,5 +38,6 @@ private:
 	void move_active_shape(COORD position);
 	std::vector<std::shared_ptr<syl_shapes::Shape>> shapes;
 	std::shared_ptr<syl_shapes::Shape> active_shape = nullptr;
+	std::pair<int, int> active_shape_offset;
 };
 
