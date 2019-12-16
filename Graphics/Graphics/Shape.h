@@ -8,9 +8,13 @@ namespace syl_shapes
 	class Shape
 	{
 	public:
-		Shape(std::pair<int, int>&& size,
-			std::pair<int, int>&& position);
-		Shape(Shape&&);
+		Shape(const std::pair<int, int>& size,
+			const std::pair<int, int>& position);
+
+		// Rule of five
+		Shape(Shape&&); //move constructor
+		Shape(const Shape&); //copy constructor
+		virtual Shape& operator=(const Shape&);
 		virtual void move(int x, int y);
 		virtual void resize(int width, int height) = 0;
 		virtual void resize(int length) = 0;

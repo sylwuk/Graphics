@@ -6,9 +6,9 @@
 namespace syl_shapes
 {
 	Rectangle::Rectangle(
-		std::pair<int, int>&& size,
-		std::pair<int, int>&& position) :
-		Shape(std::move(size), std::move(position)),
+		const std::pair<int, int>& size,
+		const std::pair<int, int>& position) :
+		Shape(size, position),
 		lines{
 		// Top line
 		std::make_unique<Line>(Line(std::make_pair(size.first, 1),
@@ -27,9 +27,33 @@ namespace syl_shapes
 	}
 
 	Rectangle::Rectangle(Rectangle&& src) :
-		Shape(std::move(src)),
+		Shape(src),
 		lines(std::move(src.lines))
 	{
+	}
+
+	Rectangle::Rectangle(const Rectangle& src) : Shape(src)
+	{
+		short index = 0;
+		for (auto& line : src.lines)
+		{
+			lines[index++].reset(new Line(std::make_pair(line->get_width(), line->get_height()),
+										  std::make_pair(line->get_x(), line->get_y())));
+		}
+	}
+
+	Rectangle& Rectangle::operator=(const Rectangle& src)
+	{
+		short index = 0;
+		for (auto& line : src.lines)
+		{
+			lines[index++].reset(new Line(std::make_pair(line->get_width(), line->get_height()),
+										  std::make_pair(line->get_x(), line->get_y())));
+		}
+
+		Shape::operator=(src);
+
+		return *this;
 	}
 
 	void Rectangle::move(int x, int y)

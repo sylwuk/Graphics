@@ -5,9 +5,10 @@
 
 namespace syl_shapes
 {
+
 	Shape::Shape(
-		std::pair<int, int>&& size,
-		std::pair<int, int>&& position) :
+		const std::pair<int, int>& size,
+		const std::pair<int, int>& position) :
 		size{ size }, position{ position }
 	{
 		if (size.first < 0 || size.second < 0) throw std::string("size cannot be negative");
@@ -18,6 +19,17 @@ namespace syl_shapes
 	{
 		size = std::move(src.size);
 		position = std::move(src.position);
+	}
+
+	Shape::Shape(const Shape& src) :
+		size{ src.size }, position{ src.position }
+	{}
+
+	Shape& Shape::operator=(const Shape& src)
+	{
+		size = src.size;
+		position = src.position;
+		return *this;
 	}
 
 	bool Shape::is_on_shape(int x, int y)

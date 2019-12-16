@@ -8,14 +8,15 @@ namespace syl_shapes
 	class Line : public Shape
 	{
 	public:
-		Line(std::pair<int, int> size, std::pair<int, int> position) : Shape(std::move(size), std::move(position)) {};
+		Line(const std::pair<int, int>& size,
+			 const std::pair<int, int>& position) : Shape(size, position) {};
 		Line(Line&&); //move constructor
-		virtual void resize(int width, int height);
-		virtual void resize(int length);
-		virtual bool is_on_shape(int x, int y);
-		virtual void draw(set_pos_callback set_pos);
+		void resize(int width, int height) override;
+		void resize(int length) override;
+		bool is_on_shape(int x, int y) override;
+		void draw(set_pos_callback set_pos) override;
 		int get_length() { return get_width(); };
-		virtual ~Line() {};
+		~Line() {};
 	};
 }
 

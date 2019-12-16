@@ -12,15 +12,17 @@ namespace syl_shapes
 	{
 	public:
 		Rectangle(
-			std::pair<int, int>&& size,
-			std::pair<int, int>&& position);
-		Rectangle(Rectangle&&);
-		virtual void move(int x, int y) override;
-		virtual void resize(int width, int height) override;
-		virtual void resize(int length) override;
-		virtual bool is_on_shape(int x, int y) override;
-		virtual void draw(set_pos_callback set_pos) override;
-		virtual ~Rectangle() {};
+			const std::pair<int, int>& size,
+			const std::pair<int, int>& position);
+		Rectangle(Rectangle&&); //move constructor
+		Rectangle(const Rectangle&); //copy constructor
+		Rectangle& operator=(const Rectangle&);
+		void move(int x, int y) override;
+		void resize(int width, int height) override;
+		void resize(int length) override;
+		bool is_on_shape(int x, int y) override;
+		void draw(set_pos_callback set_pos) override;
+		~Rectangle() {};
 	private:
 		std::array<std::unique_ptr<Line>, 4> lines;
 	};
