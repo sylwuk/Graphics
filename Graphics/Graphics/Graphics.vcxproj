@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="Console.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="Plot.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeFactory.h" />
@@ -129,6 +130,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Plot.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="SlotMachine.cpp" />

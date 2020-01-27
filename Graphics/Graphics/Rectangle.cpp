@@ -6,39 +6,47 @@
 namespace syl_shapes
 {
 	Rectangle::Rectangle(
-		const std::pair<int, int>& size,
-		const std::pair<int, int>& position) :
-		Shape(size, position),
+		const std::pair<int, int>& top_left,
+		const std::pair<int, int>& bottom_right,
+		int thickness,
+		color clr) :
+		Shape(top_left, clr),
+		bottom_right{ bottom_right },
+		thickness{ thickness },
 		lines{
 		// Top line
-		std::make_unique<Line>(Line(std::make_pair(size.first, 1),
-									std::make_pair(position.first, position.second))),
+		std::make_unique<Line>(Line(std::make_pair(top_left.first, top_left.second),
+									std::make_pair(bottom_right.first, top_left.second), thickness, clr)),
 		// Bottom line
-		std::make_unique<Line>(Line(std::make_pair(size.first, 1),
-									std::make_pair(position.first, position.second + size.second - 1))),
+		std::make_unique<Line>(Line(std::make_pair(top_left.first, bottom_right.second),
+									std::make_pair(bottom_right.first, bottom_right.second), thickness, clr)),
 		// Left line
-		std::make_unique<Line>(Line(std::make_pair(1, size.second),
-									std::make_pair(position.first, position.second))),
+		std::make_unique<Line>(Line(std::make_pair(top_left.first, top_left.second),
+									std::make_pair(top_left.first, bottom_right.second), thickness, clr)),
 		// Right line
-		std::make_unique<Line>(Line(std::make_pair(1, size.second),
-									std::make_pair(position.first + size.first - 1, position.second)))
+		std::make_unique<Line>(Line(std::make_pair(bottom_right.first, top_left.second),
+									std::make_pair(bottom_right.first, bottom_right.second+thickness-1), thickness, clr))
 		}
 	{
 	}
 
 	Rectangle::Rectangle(Rectangle&& src) :
 		Shape(src),
-		lines(std::move(src.lines))
+		bottom_right{ std::move(src.bottom_right) },
+		lines{ std::move(src.lines) },
+		thickness{ std::move(src.thickness) }
 	{
 	}
 
-	Rectangle::Rectangle(const Rectangle& src) : Shape(src)
+	Rectangle::Rectangle(const Rectangle& src) :
+		Shape(src),
+		bottom_right{ src.bottom_right },
+		thickness{ std::move(src.thickness) }
 	{
 		short index = 0;
 		for (auto& line : src.lines)
 		{
-			lines[index++].reset(new Line(std::make_pair(line->get_width(), line->get_height()),
-										  std::make_pair(line->get_x(), line->get_y())));
+			lines[index++].reset(new Line(*line.get())); //copy lines
 		}
 	}
 
@@ -47,8 +55,7 @@ namespace syl_shapes
 		short index = 0;
 		for (auto& line : src.lines)
 		{
-			lines[index++].reset(new Line(std::make_pair(line->get_width(), line->get_height()),
-										  std::make_pair(line->get_x(), line->get_y())));
+			lines[index++].reset(new Line(*line.get())); //copy lines
 		}
 
 		Shape::operator=(src);
@@ -58,18 +65,21 @@ namespace syl_shapes
 
 	void Rectangle::move(int x, int y)
 	{
+		bottom_right.first -= get_begin_x() - x;
+		bottom_right.second -= get_begin_y() - y;
 		lines[0]->move(x, y);					 // Move top line
-		lines[1]->move(x, y + get_height() - 1); // Move bottom line
+		lines[1]->move(x, bottom_right.second); // Move bottom line
 		lines[2]->move(x, y);					 // Move left line
-		lines[3]->move(x + get_width() - 1, y);  // Move right line
+		lines[3]->move(bottom_right.first, y);  // Move right line
+
 		Shape::move(x, y);
 	}
 
-	void Rectangle::draw(set_pos_callback set_pos)
+	void Rectangle::draw(set_pos_callback set_pos, draw_callback draw_func)
 	{
 		for (auto& line : lines)
 		{
-			line->draw(set_pos);
+			line->draw(set_pos, draw_func);
 		}
 	}
 

@@ -12,8 +12,10 @@ namespace syl_shapes
 	{
 	public:
 		Rectangle(
-			const std::pair<int, int>& size,
-			const std::pair<int, int>& position);
+			const std::pair<int, int>& top_left,
+			const std::pair<int, int>& bottom_right,
+			int thickness,
+			color clr);
 		Rectangle(Rectangle&&); //move constructor
 		Rectangle(const Rectangle&); //copy constructor
 		Rectangle& operator=(const Rectangle&);
@@ -21,9 +23,11 @@ namespace syl_shapes
 		void resize(int width, int height) override;
 		void resize(int length) override;
 		bool is_on_shape(int x, int y) override;
-		void draw(set_pos_callback set_pos) override;
+		void draw(set_pos_callback set_pos, draw_callback draw_func) override;
 		~Rectangle() {};
 	private:
+		int thickness;
 		std::array<std::unique_ptr<Line>, 4> lines;
+		std::pair<int, int> bottom_right; //x, y
 	};
 }

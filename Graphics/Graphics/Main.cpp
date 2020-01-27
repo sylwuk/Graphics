@@ -5,16 +5,41 @@
 #include "Console.h"
 #include "Window.h"
 #include "ShapeFactory.h"
+#include "Plot.h"
+using namespace graphics;
 
 //int main()
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE previnstance, LPSTR lpcmdline, int ncmdshow)
 {
 	try
 	{
-		std::unique_ptr<Gui> window = std::make_unique<Window>(hInstance,
+		
+
+		/*std::unique_ptr<Gui> window = std::make_unique<Window>(hInstance,
 			"DesktopApp",
-			"Windows Desktop Guided Tour Application",
-			ncmdshow);
+			"Shapes",
+			1280,
+			768,
+			ncmdshow);*/
+		//Plot plot{ std::move(window) };
+		Plot plot{ std::make_unique<Window>(hInstance,
+			"DesktopApp",
+			"Shapes",
+			1280,
+			768,
+			ncmdshow) };
+		std::vector<int> vec;
+		plot.add_x_axis(vec);
+		std::unique_ptr<Gui> console = std::make_unique<Console>(100,100);
+		/*window->add_shape<syl_shapes::Line>(syl_shapes::Line(std::make_pair(10, 20), std::make_pair(50, 40), 1, syl_shapes::color::RED));
+		window->add_shape<syl_shapes::Line>(syl_shapes::Line(std::make_pair(100, 100), std::make_pair(150, 100), 2 ,syl_shapes::color::GREEN));
+		window->add_shape<syl_shapes::Line>(syl_shapes::Line(std::make_pair(250, 150), std::make_pair(200, 300), 3, syl_shapes::color::BLUE));
+		window->add_shape<syl_shapes::Line>(syl_shapes::Line(std::make_pair(400, 300), std::make_pair(400, 150), 4, syl_shapes::color::BLACK));
+		window->add_shape<syl_shapes::Line>(syl_shapes::Line(std::make_pair(600, 150), std::make_pair(600, 400), 5, syl_shapes::color::ORANGE));
+		window->add_shape<syl_shapes::Rectangle>(syl_shapes::Rectangle(std::make_pair(50, 50), std::make_pair(300, 300), 3, syl_shapes::color::PURPLE));*/
+		//window->add_shape<syl_shapes::Rectangle>(syl_shapes::Rectangle(std::make_pair(70, 30), std::make_pair(200, 100), 10));
+		//window->add_shape<syl_shapes::Rectangle>(syl_shapes::Rectangle(std::make_pair(5, 5), std::make_pair(0, 0), 1));
+		//window->add_shape<syl_shapes::Line>(syl_shapes::Line(std::make_pair(20, 1), std::make_pair(0, 20)));
 		/*Factory<Shape> factory;
 		factory.create<syl_shapes::Rectangle>(0, 0, 10, 20);
 	
@@ -33,11 +58,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE previnstance, LPSTR lpcmdline,
 		window->add_shape<syl_shapes::Rectangle>(syl_shapes::Rectangle(std::make_pair(20, 10), std::make_pair(25, 0)));
 		*/
 
-		while (!window->terminate())
+		/*while (!window->terminate())
 		{
 			window->get_events();
-			window->draw();
-		}
+			//window->draw();
+		}*/
+		plot.run();
 	}
 	catch (std::string &exeption)
 	{
